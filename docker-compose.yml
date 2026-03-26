@@ -40,7 +40,7 @@ services:
             mysql:
                 condition: service_healthy
             dealership-service:
-                condition: dealership_started
+                condition: service_started
 
 volumes:
     mysql-data:
