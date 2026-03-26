@@ -1,0 +1,19 @@
+version: "2.2"
+
+services:
+	dealership-service:
+		build: ./dealership-service
+		ports:
+			- "8081:8080"
+		enviroment:
+			- SERVER_PORT=8080
+	
+	car-service:
+		build: ./car-service
+		port:
+			- "8080:8080"
+		enviroment:
+			- SERVER_PORT=8080
+			- dealership_SERVICE_URL=http://dealership-service:8080
+		depends_on:
+			- dealership-service
