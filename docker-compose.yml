@@ -1,19 +1,46 @@
 version: "2.2"
 
 services:
+    mysql:
+        image: mysql:8.0
+        container_name: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpassword
+        ports:
+            - "3307:3306"
+        volumes:
+            - mysql-data:/var/lib/mysql
+            - ./mysql-init:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: ["CMD","mysqladmin","ping","-h","localhost","-prootpassword"]
+            interval: 10s
+            timeout: 5s
+            retries: 10
+
     dealership-service:
         build: ./dealership-service
         ports:
             - "8081:8080"
-        enviroment:
+        environment:
             - SERVER_PORT=8080
-    
+            - SPING_PROFILES_ACTIVE=docker
+        depends_on:
+            mysql:
+                condition: service_healthy
+
     car-service:
         build: ./car-service
-        port:
+        ports:
             - "8080:8080"
-        enviroment:
+        environment:
             - SERVER_PORT=8080
-            - dealership_SERVICE_URL=http://dealership-service:8080
+            - DEALERSHIP_SERVICE_URL=http://dealership-service:8080
+            - SPRING_PROFILES_ACTIVE=docker
         depends_on:
-            - dealership-service
+            mysql:
+                condition: service_healthy
+            dealership-service:
+                condition: dealership_started
+
+volumes:
+    mysql-data:
