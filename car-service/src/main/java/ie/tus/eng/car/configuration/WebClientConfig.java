@@ -14,7 +14,7 @@ public class WebClientConfig {
 	@Bean
 	public WebClient webClient() {
 		return WebClient.builder()
-				.baseUrl("https://localhost:8081")
+				.baseUrl("http://dealership-service:8080")
 				.clientConnector(new ReactorClientHttpConnector(
 					HttpClient.create().responseTimeout(Duration.ofSeconds(5))
 				))
