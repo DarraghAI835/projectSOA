@@ -1,7 +1,5 @@
 package ie.tus.eng.car.service;
 
-import java.util.Optional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +11,7 @@ import ie.tus.eng.car.model.Car;
 import ie.tus.eng.car.model.CarResponse;
 import ie.tus.eng.car.repository.CarRepository;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @Service
 public class ApiService {
@@ -25,7 +24,7 @@ public class ApiService {
     private WebClient webClient;
     
     public Mono<ResponseEntity<CarResponse>> getCarById(long id) {
-    	return Mono.fromCallable(()->repository.findById(id)).subscribeOn(Schedulers.boundedElastic()); 
+    	return Mono.fromCallable(()->repository.findById(id)).subscribeOn(Schedulers.boundedElastic())
     			.flatMap(carO ->{
     				if (carO.isEmpty()) {
     		        	return Mono.just(ResponseEntity.notFound().build());
