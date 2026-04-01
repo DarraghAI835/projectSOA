@@ -66,15 +66,15 @@ public class CarController {
     }
 	@GetMapping("/{id}")
 	public Mono<ResponseEntity<CarResponse>> retrieveOneCar (@PathVariable long id){
-		Optional<Car> car = repository.findById(id);
-		if (car.isEmpty()) {
-			System.out.println("Car not found in database");
-			return Mono.just(ResponseEntity.notFound().build());
-		}
-		else {
-			Car carf=car.get();
-			return apiservice.getCarById(carf.getCarId());
-		}
+//		Optional<Car> car = repository.findById(id);
+//		if (car.isEmpty()) {
+//			System.out.println("Car not found in database");
+//			return Mono.just(ResponseEntity.notFound().build());
+//		}
+//		else {
+		//Car carf=car.get();
+		return apiservice.getCarById(id);//carf.getCarId());
+//		}
 	}
 	//POST
 	@PostMapping
