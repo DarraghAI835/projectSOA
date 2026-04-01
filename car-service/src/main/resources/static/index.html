@@ -17,12 +17,14 @@
 		
 		btn1.addEventListener("click",()=>{
 			infoHere.innerHTML="";
-			fetch("http://localhost:8080/cars").then(response => response.json()).then(data=>
+			fetch("http://localhost:8080/cars")
+			.then(response => response.json())
+			.then(data=>{
 				console.log(data);
-				infoHere.innerHTML =data.map(car=><div>${car.name}-${car.model}</div>).join("");
-			);
+				infoHere.innerHTML =data.map(car=>'<div>${car.name}-${car.model}</div>').join("");
+			});
 			
-		})
+		});
 	</script>
 </body>
 </html>
