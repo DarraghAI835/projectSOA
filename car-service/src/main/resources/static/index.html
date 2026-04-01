@@ -21,7 +21,7 @@
 			.then(response => response.json())
 			.then(data=>{
 				console.log(data);
-				infoHere.innerHTML =data.map(car=>'<div>${car.name}-${car.model}</div>').join("");
+				infoHere.innerHTML =data.map(car=>`<div>${car.name}-${car.model}</div>`).join("");
 			});
 			
 		});
