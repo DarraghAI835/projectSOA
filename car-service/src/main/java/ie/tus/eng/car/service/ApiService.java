@@ -25,25 +25,28 @@ public class ApiService {
     private WebClient webClient;
     
     public Mono<ResponseEntity<CarResponse>> getCarById(long id) {
-
-        Optional<Car> carO = repository.findById(id);
+    	return Mono.fromCallable(()->repository.findById(id)).subscribeOn(Schedulers.boundedElastic()); 
+    			.flatMap(carO ->{
+    				if (carO.isEmpty()) {
+    		        	return Mono.just(ResponseEntity.notFound().build());
+    		        }
+    		        Car car = carO.get();
+    		        
+    		        CarResponse CarResponse = mapper.map(car, CarResponse.class);
+    		        
+    		        return webClient.get()
+    					.uri("/dealerships/{id}",id)
+    					.retrieve()
+    					.bodyToMono(Dealership.class)
+    					.map(dealership -> {
+    						CarResponse response = new CarResponse(car,dealership);
+    						return ResponseEntity.ok(response);
+    					});
+    			});
+    			
+        //Optional<Car> carO = repository.findById(id);
         
-        if (carO.isEmpty()) {
-        	return Mono.just(ResponseEntity.notFound().build());
-        }
-        Car car = carO.get();
         
-        
-        CarResponse CarResponse = mapper.map(car, CarResponse.class);
-        
-        return webClient.get()
-			.uri("/dealerships/{id}",id)
-			.retrieve()
-			.bodyToMono(Dealership.class)
-			.map(dealership -> {
-				CarResponse response = new CarResponse(car,dealership);
-				return ResponseEntity.ok(response);
-			});
         
         // Using WebClient
     }
