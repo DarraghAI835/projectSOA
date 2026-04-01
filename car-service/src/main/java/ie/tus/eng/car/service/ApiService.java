@@ -31,8 +31,6 @@ public class ApiService {
     		        }
     		        Car car = carO.get();
     		        
-    		        CarResponse CarResponse = mapper.map(car, CarResponse.class);
-    		        
     		        return webClient.get()
     					.uri("/dealerships/{id}",id)
     					.retrieve()
@@ -40,7 +38,13 @@ public class ApiService {
     					.map(dealership -> {
     						CarResponse response = new CarResponse(car,dealership);
     						return ResponseEntity.ok(response);
-    					});
+    					})
+    					.onErrorResume(e -> {
+    	                    System.out.println("Dealership service failed");
+    	                    return Mono.just(
+    	                        ResponseEntity.status(500).build()
+    	                    );
+    	                });
     			});
     			
         //Optional<Car> carO = repository.findById(id);
