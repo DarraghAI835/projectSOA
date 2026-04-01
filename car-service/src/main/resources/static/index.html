@@ -45,28 +45,25 @@
 				.then(response => response.json())
 				.then(data=>{
 					console.log(data);
-					.innerHTML =data.map(car=>`<tr><td><button class="selectCarButton">${car.carId}</button></td><td>${car.make}</td><td>${car.model}</td><td>${car.age}</td><td>${car.colour}</td><td>${car.garageId}</td></tr>`).join("");
-				});
-			document.querySelectorAll(".selectCarButton").forEach(function(elem){
-				elem.addEventLister("click",function(){
-					carDetails.innerHTML="";
-					fetch("http://localhost:8080/cars")
-					.then(response => response.json())
-					.then(data=>{
-						console.log(data);
-						carDetails.innerHTML =data.map(car=>`<div>${car.name}-${car.model}</div>`).join("");
+					carsTable.innerHTML =data.map(car=>`<tr><td><button class="selectCarButton">${car.carId}</button></td><td>${car.make}</td><td>${car.model}</td><td>${car.age}</td><td>${car.colour}</td><td>${car.garageId}</td></tr>`).join("");
+					document.querySelectorAll(".selectCarButton").forEach(function(elem){
+						elem.addEventListener("click",function(){
+							carDetails.innerHTML="";
+							const carId = this.textContent;
+							fetch("http://localhost:8080/cars/"+carId)
+							.then(response => response.json())
+							.then(data=>{
+								console.log(data);
+								carDetails.innerHTML =`<div>${car. make}-${car.model}</div>`;
+							});
+						});	
 					});
-				});	
-			});
+				});
+			
 		});
 		
 		
-		"carId": 6,
-	    "make": "Ford",
-	    "model": "Fiesta",
-	    "age": 2012,
-	    "colour": "Gray",
-	    "garageId": 3
+	
 
 	</script>
 </body>
