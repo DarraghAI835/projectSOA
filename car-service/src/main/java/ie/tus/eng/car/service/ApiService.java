@@ -27,7 +27,7 @@ public class ApiService {
     	return Mono.fromCallable(()->repository.findById(id)).subscribeOn(Schedulers.boundedElastic())
     			.flatMap(carO ->{
     				if (carO.isEmpty()) {
-    		        	return Mono.just(ResponseEntity.notFound().build());
+    		        	return Mono.just(ResponseEntity.notFound().<CarResponse>build());
     		        }
     		        Car car = carO.get();
     		        
@@ -44,9 +44,6 @@ public class ApiService {
     			});
     			
         //Optional<Car> carO = repository.findById(id);
-        
-        
-        
         // Using WebClient
     }
     public Mono<ResponseEntity<Car>> createCar(Car car) {
