@@ -65,6 +65,7 @@ public class CarController {
         		}
         	}
         }
+        headers.setETag(etag);
         return new ResponseEntity<List<Car>>(cars, headers, HttpStatus.OK);
     }
 	@GetMapping("/{id}")
