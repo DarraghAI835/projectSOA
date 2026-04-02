@@ -35,6 +35,7 @@
 
 	<p id="infoHere"></p>
 	<script>
+		let lastEtag =null;
 		let lastResponse=[];
 		const formAddCar = document.getElementById("formAddCar");
 		const btn1 =document.getElementById("btn1");
@@ -68,7 +69,7 @@
 			.then(showAdded=>{
 				alert("Added Car of make "+ data.make)
 			});
-		});
+		};
 		
 		document.addEventListener("DOMContentLoaded", function () {
 			refreshCarsTable();
@@ -86,7 +87,7 @@
 					Etag.innerHTML=`Etag: ${etagHeader}`;
 					if(response.status === 304){
 						status.innerHTML="304";
-						return [lastResponse];
+						return lastResponse;
 					}
 					status.innerHTML="Status Code: "+response.status;
 					return response.json();
