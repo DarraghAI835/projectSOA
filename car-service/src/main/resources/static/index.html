@@ -46,7 +46,7 @@
 			Etag.innerHTML="";
 			fetch("http://localhost:8080/cars")
 				.then(response => {
-					response.json())
+					response.json();
 					const etagHeader =response.headers.get("ETag");
 					Etag.innerHTML=`Etag: ${etagHeader}`;
 				}
