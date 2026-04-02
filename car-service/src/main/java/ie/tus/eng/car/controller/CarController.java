@@ -54,7 +54,7 @@ public class CarController {
 		String etag = EtagGenerator.generate(carsString);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setETag(etag);
+        //ResponseEntity.ETag(etag);
         if(etag.equals(ifNoneMatch)) {
         	return ResponseEntity.status(HttpStatus.NOT_MODIFIED).eTag(etag).build();
         }

@@ -10,25 +10,33 @@
 		<div class="column">
 			<h3>Cars Table</h3>
 			<table id="carsTable">
-			
+
 			</table>
 			<h3>Specific Car Details</h3>
 			<p>Select a car to see the car+garage details</p>
-			<p id="carDetails">
-			</p>
+			<p id="carDetails"></p>
 		</div>
 		<div class="column">
 			<button id="btn1">Refresh Cars</button>
 			<p id="status"></p>
 			<p id="Etag"></p>
-		
+			<h3>Add a Car</h3>
+			<form id="formAddCar" onsubmit="addCar(); return false;" method="post">
+				<label for="carId">Car ID:</label><input type="number"id="carId" name="carId"><br>
+				<label for="make">Make:</label><input type="text" id="make" name="make"><br>
+				<label for="model">Model:</label><input type="text"id="model" name="model"><br>
+				<label for="make">Age:</label><input type="number" id="age" name="age"><br>
+				<label for="carId">Dealership ID:</label><input type="number"id="dealershipId" name="dealershipId"><br>
+				<input type="submit" value="Submit">
+			</form>
 		</div>
 	</div>
-	
+
 
 	<p id="infoHere"></p>
 	<script>
 		let lastResponse=[];
+		const formAddCar = document.getElementById("formAddCar");
 		const btn1 =document.getElementById("btn1");
 		const infoHere =document.getElementById("infoHere");
 		const carsTable =document.getElementById("carsTable");
@@ -39,7 +47,28 @@
 		btn1.addEventListener("click",()=>{
 			refreshCarsTable();
 		});
-		
+		function addCar(){
+			const formData = new FormData(formAddCar)
+			const data = Object.fromEntries(formData.entries());
+			data.carId=parseInt(data.carId);
+			data.age=parseInt(data.age);
+			data.dealershipId=parseInt(data.dealershipId;
+			fetch("http://localhost:8080/cars", {
+			    method: "POST",
+			    body: JSON.stringify(data),		
+			    // Adding headers to the request
+			    headers: {
+			        "Content-type": "application/json; charset=UTF-8"
+			    }
+			})
+			// Converting to JSON
+			.then(response => response.json())
+			// Displaying results to console
+			.then(json => console.log(json))
+			.then(showAdded=>{
+				alert("Added Car of make "+ data.make)
+			});
+		});
 		
 		document.addEventListener("DOMContentLoaded", function () {
 			refreshCarsTable();
@@ -59,7 +88,7 @@
 						status.innerHTML="304";
 						return [lastResponse];
 					}
-					status.innerHTML=response.status;
+					status.innerHTML="Status Code: "+response.status;
 					return response.json();
 				})
 				.then(data=>{
