@@ -2,6 +2,7 @@ package ie.tus.eng.car.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ie.tus.eng.car.dealership.DealershipClient;
+import ie.tus.eng.car.etag.EtagGenerator;
 import ie.tus.eng.car.model.Car;
 import ie.tus.eng.car.model.CarResponse;
 import ie.tus.eng.car.repository.CarRepository;
@@ -46,9 +48,10 @@ public class CarController {
 //		return ResponseEntity.ok().eTag(etag).body(cars);
 //	}
 	@GetMapping
-	public ResponseEntity<List<Car>> retrieveAllCars(@RequestHeader(value =HttpHeaders.IF_NONE_MATCH,required=false) String ifNoneMatch){
+	public ResponseEntity<List<Car>> retrieveAllCars(@RequestHeader(value =HttpHeaders.IF_NONE_MATCH,required=false) String ifNoneMatch) throws Exception{
 		List<Car> cars = repository.findAll();
-		String etag = "\"" + Integer.toHexString(cars.hashCode()) + "\"";
+		String carsString =cars.stream().map(car->car.toString()).collect(Collectors.joining(","));
+		String etag = EtagGenerator.generate(carsString);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setETag(etag);
