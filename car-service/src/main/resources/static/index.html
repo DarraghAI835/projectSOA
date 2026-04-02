@@ -28,6 +28,7 @@
 
 	<p id="infoHere"></p>
 	<script>
+		let lastResponse=[];
 		const btn1 =document.getElementById("btn1");
 		const infoHere =document.getElementById("infoHere");
 		const carsTable =document.getElementById("carsTable");
@@ -45,20 +46,25 @@
 		});
 		function refreshCarsTable(){
 			Etag.innerHTML="";
-			fetch("http://localhost:8080/cars")
+			fetch("http://localhost:8080/cars",{
+				headers:lastEtag?{'If-None-Match':lastEtag}:{}
+			})
 				.then(response => {
 					const etagHeader =response.headers.get("ETag");
+					if (etagHeader) {
+						lastEtag=etagHeader;
+					}
 					Etag.innerHTML=`Etag: ${etagHeader}`;
 					if(response.status === 304){
 						status.innerHTML="304";
-						return [];
+						return [lastResponse];
 					}
 					status.innerHTML=response.status;
 					return response.json();
 				})
 				.then(data=>{
 					if (!data||data.length===0) return;
-					
+					lastResponse=data;
 					carsTable.innerHTML = "<tr><td>carId</td><td>make</td><td>model</td><td>age</td><td>colour</td><td>garageId</td></tr>";
 					
 					console.log(data);
