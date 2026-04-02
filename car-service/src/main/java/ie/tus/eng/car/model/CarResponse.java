@@ -39,7 +39,7 @@ public class CarResponse {
 	public long getCarId() {
 		return carId;
 	}
-	public void setId(long carId) {
+	public void setCarId(long carId) {
 		this.carId = carId;
 	}
 	public String getMake() {
