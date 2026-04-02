@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import ie.tus.eng.car.dealership.Dealership;
 
 @JsonPropertyOrder({
-	"id",
+	"carId",
 	"make",
 	"model",
 	"age",
@@ -23,24 +23,24 @@ public class CarResponse {
 	}
 	public CarResponse(Car car,Dealership dealership) {
 		super();
-		this.id = car.getCarId();
+		this.carId = car.getCarId();
 		this.make = car.getMake();
 		this.model = car.getModel();
 		this.age = car.getAge();
 		this.colour = car.getColour();
 		this.dealershipId = dealership;
 	}
-	private Long id;
+	private Long carId;
 	private String make;
 	private String model;
 	private int age;
 	private String colour;
 	private Dealership dealershipId;
-	public long getId() {
-		return id;
+	public long getCarId() {
+		return carId;
 	}
-	public void setId(long id) {
-		this.id = id;
+	public void setId(long carId) {
+		this.carId = carId;
 	}
 	public String getMake() {
 		return make;
@@ -74,7 +74,7 @@ public class CarResponse {
 	}
 	@Override
 	public String toString() {
-		return "CarResponse [id=" + id + ", make=" + make + ", model=" + model + ", age=" + age + ", colour=" + colour
+		return "CarResponse [car ID=" + carId + ", make=" + make + ", model=" + model + ", age=" + age + ", colour=" + colour
 				+ ", dealershipId=" + dealershipId + "]";
 	}
 }

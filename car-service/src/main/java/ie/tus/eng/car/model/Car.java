@@ -23,15 +23,15 @@ public class Car {
 	@Column(nullable=false)
 	private String colour;
 	@Column(nullable=false)
-	private Long garageId;
-	public Car(Long carId, String make, String model, int age, String colour, Long garageId) {
+	private Long dealershipId;
+	public Car(Long carId, String make, String model, int age, String colour, Long dealershipId) {
 		super();
 		this.carId = carId;
 		this.make = make;
 		this.model = model;
 		this.age = age;
 		this.colour = colour;
-		this.garageId = garageId;
+		this.dealershipId = dealershipId;
 	}
 	public Car() {
 		super();
@@ -62,16 +62,16 @@ public class Car {
 	public void setColour(String colour) {
 		this.colour = colour;
 	}
-	public Long getGarageId() {
-		return garageId;
+	public Long getDealershipId() {
+		return dealershipId;
 	}
-	public void setGarageId(Long garageId) {
-		this.garageId = garageId;
+	public void setDealershipId(Long dealershipId) {
+		this.dealershipId = dealershipId;
 	}
 	@Override
 	public String toString() {
 		return "Car [carId=" + carId + ", make=" + make + ", model=" + model + ", age=" + age + ", Colour=" + colour
-				+ ", garageId=" + garageId + "]";
+				+ ", dealershipId=" + dealershipId + "]";
 	}
 	public int getAge() {
 		return age;

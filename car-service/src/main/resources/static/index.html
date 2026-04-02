@@ -48,8 +48,8 @@
 				.then(response => response.json())
 				.then(data=>{
 					console.log(data);
-					Etag.innerHTML=`Etag: ${cars.etag}`;
-					carsTable.innerHTML =data.map(car=>`<tr><td><button class="selectCarButton">${car.carId}</button></td><td>${car.make}</td><td>${car.model}</td><td>${car.age}</td><td>${car.colour}</td><td>${car.garageId}</td></tr>`).join("");
+					Etag.innerHTML=`Etag: ${data.etag}`;
+					carsTable.innerHTML =carsTable.innerHTML+data.map(car=>`<tr><td><button class="selectCarButton">${car.carId}</button></td><td>${car.make}</td><td>${car.model}</td><td>${car.age}</td><td>${car.colour}</td><td>${car.dealershipId}</td></tr>`).join("");
 					document.querySelectorAll(".selectCarButton").forEach(function(elem){
 						elem.addEventListener("click",function(){
 							carDetails.innerHTML="";
@@ -58,7 +58,7 @@
 							.then(response => response.json())
 							.then(data=>{
 								console.log(data);
-								carDetails.innerHTML =`<div>Car ID: ${data.id}</div>`;
+								carDetails.innerHTML =`<div>Car ID: ${data.carId}</div>`;
 								carDetails.innerHTML =carDetails.innerHTML+`<div>Car Make: ${data.make}</div>`;
 								carDetails.innerHTML =carDetails.innerHTML+`<div>Car Model: ${data.model}</div>`;
 								carDetails.innerHTML =carDetails.innerHTML+`<div>Car Age: ${data.age}</div>`;
@@ -68,7 +68,7 @@
 								carDetails.innerHTML =carDetails.innerHTML+`<div>Dealership Address: ${data.dealershipId.address}</div>`;
 								carDetails.innerHTML =carDetails.innerHTML+`<div>Dealership County: ${data.dealershipId.county}</div>`;
 								carDetails.innerHTML =carDetails.innerHTML+`<div>Dealership Phone: ${data.dealershipId.phone}</div>`;
-								carDetails.innerHTML =carDetails.innerHTML+`<div>Dealership Owner: ${data.dealershipId.Owner}</div>`;
+								carDetails.innerHTML =carDetails.innerHTML+`<div>Dealership Owner: ${data.dealershipId.owner}</div>`;
 							});
 						});	
 					});
