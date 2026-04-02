@@ -49,7 +49,7 @@
 					response.json();
 					const etagHeader =response.headers.get("ETag");
 					Etag.innerHTML=`Etag: ${etagHeader}`;
-				}
+				})
 				.then(data=>{
 					console.log(data);
 					carsTable.innerHTML =carsTable.innerHTML+data.map(car=>`<tr><td><button class="selectCarButton">${car.carId}</button></td><td>${car.make}</td><td>${car.model}</td><td>${car.age}</td><td>${car.colour}</td><td>${car.dealershipId}</td></tr>`).join("");
