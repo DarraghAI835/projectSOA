@@ -64,9 +64,13 @@
 			// Converting to JSON
 			.then(response => response.json())
 			// Displaying results to console
-			.then(json => console.log(json))
-			.then(showAdded=>{
-				alert("Added Car of make "+ data.make)
+			//.then(json => console.log(json))
+			.then(response=>{
+				if(response.ok){
+					alert("Added Car of make "+ data.make);
+				}else{
+					alert("Error with "+ data.make);
+				}
 			});
 		};
 		
