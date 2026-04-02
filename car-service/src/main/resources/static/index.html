@@ -48,7 +48,7 @@
 				.then(response => response.json())
 				.then(data=>{
 					console.log(data);
-					Etag.innerHTML=`Etag: ${data.etag}`;
+					Etag.innerHTML=`Etag: ${etagHeader}`;
 					carsTable.innerHTML =carsTable.innerHTML+data.map(car=>`<tr><td><button class="selectCarButton">${car.carId}</button></td><td>${car.make}</td><td>${car.model}</td><td>${car.age}</td><td>${car.colour}</td><td>${car.dealershipId}</td></tr>`).join("");
 					document.querySelectorAll(".selectCarButton").forEach(function(elem){
 						elem.addEventListener("click",function(){
