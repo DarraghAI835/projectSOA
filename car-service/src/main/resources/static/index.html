@@ -45,10 +45,13 @@
 			carsTable.innerHTML = "<tr><td>carId</td><td>make</td><td>model</td><td>age</td><td>colour</td><td>garageId</td></tr>";
 			Etag.innerHTML="";
 			fetch("http://localhost:8080/cars")
-				.then(response => response.json())
+				.then(response => {
+					response.json())
+					const etagHeader =response.headers.get("ETag");
+					Etag.innerHTML=`Etag: ${etagHeader}`;
+				}
 				.then(data=>{
 					console.log(data);
-					Etag.innerHTML=`Etag: ${response.headers.get("ETag")}`;
 					carsTable.innerHTML =carsTable.innerHTML+data.map(car=>`<tr><td><button class="selectCarButton">${car.carId}</button></td><td>${car.make}</td><td>${car.model}</td><td>${car.age}</td><td>${car.colour}</td><td>${car.dealershipId}</td></tr>`).join("");
 					document.querySelectorAll(".selectCarButton").forEach(function(elem){
 						elem.addEventListener("click",function(){
