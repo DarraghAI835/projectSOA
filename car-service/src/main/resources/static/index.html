@@ -6,8 +6,8 @@
 </head>
 <body>
 	<h1>SOA 4 Conditional GET PROJECT</h1>
-	<div class="row">
-		<div class="column">
+	<div class="row mb-2">
+		<div class="col-mb-6">
 			<h3>Cars Table</h3>
 			<table id="carsTable">
 
@@ -16,15 +16,29 @@
 			<p>Select a car to see the car+garage details</p>
 			<p id="carDetails"></p>
 		</div>
-		<div class="column">
+		<div class="col-mb-6">
 			<button id="btn1">Refresh Cars</button>
 			<p id="status"></p>
 			<p id="Etag"></p>
 			<h3>Add a Car</h3>
 			<form id="formAddCar" onsubmit="addCar(); return false;" method="post" required>
-				<label for="make">Make:</label><input type="text" id="make" name="make" required><br>
+				<label for="make">Make:</label>
+				<input type="text" id="make" name="make" required><br>
 				<label for="model">Model:</label><input type="text"id="model" name="model"required><br>
-				<label for="make">Age:</label><input type="number" id="age" name="age"required><br>
+				<label for="age">Age:</label><input type="number" id="age" name="age"required><br>
+				<label for="colour">Colour:</label><input type="text"id="colour" name="colour" required><br>
+				<label for="dealershipId">Dealership ID:</label><input type="number"id="dealershipId" name="dealershipId" required><br>
+				<input type="submit" value="Submit">
+			</form>
+			<h3>Update a Car</h3>
+			<form id="formUpdateCar" onsubmit="updateCar(); return false;" method="put" required>
+				<label for="carId">Car ID:</label>
+				<input type="number" id="carId" name="carId" required><br>
+				<label for="make">Make:</label>
+				<input type="text" id="make" name="make" required><br>
+				<label for="model">Model:</label><input type="text"id="model" name="model"required><br>
+				<label for="age">Age:</label><input type="number" id="age" name="age"required><br>
+				<label for="colour">Colour:</label><input type="text"id="colour" name="colour" required><br>
 				<label for="dealershipId">Dealership ID:</label><input type="number"id="dealershipId" name="dealershipId" required><br>
 				<input type="submit" value="Submit">
 			</form>
@@ -36,6 +50,7 @@
 	<script>
 		let lastEtag =null;
 		let lastResponse=[];
+		const formUpdateCar = document.getElementById("formUpdateCar");
 		const formAddCar = document.getElementById("formAddCar");
 		const btn1 =document.getElementById("btn1");
 		const infoHere =document.getElementById("infoHere");
@@ -58,7 +73,7 @@
 			    body: JSON.stringify(data),		
 			    // Adding headers to the request
 			    headers: {
-			        "Content-type": "application/json; charset=UTF-8"
+			        "Content-Type": "application/json; charset=UTF-8"
 			    }
 			})
 			// Converting to JSON
@@ -73,6 +88,35 @@
 				}
 			});
 		};
+		//////////////////
+		function updateCar(){
+			const formData = new FormData(formUpdateCar)
+			const data = Object.fromEntries(formData.entries());
+			data.carId=parseInt(data.carId);
+			data.age=parseInt(data.age);
+			data.dealershipId=parseInt(data.dealershipId);
+			fetch("http://localhost:8080/cars/"+data.carId, {
+			    method: "PUT",
+			    body: JSON.stringify(data),		
+			    // Adding headers to the request
+			    headers: {
+			        "Content-Type": "application/json; charset=UTF-8"
+			    }
+			})
+			// Converting to JSON
+			//.then(response => response.json())
+			// Displaying results to console
+			//.then(json => console.log(json))
+			.then(response=>{
+				if(response.ok){
+					alert("Updated Car of make "+ data.make);
+				}else{
+					alert("Error with "+ data.make);
+				}
+			});
+		};
+		//////////////////
+		
 		
 		document.addEventListener("DOMContentLoaded", function () {
 			refreshCarsTable();

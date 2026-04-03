@@ -32,7 +32,7 @@ public class ApiService {
     		        Car car = carO.get();
     		        
     		        return webClient.get()
-    					.uri("/dealerships/{id}",id)
+    					.uri("/dealerships/{id}",car.getDealershipId())
     					.retrieve()
     					.bodyToMono(Dealership.class)
     					.map(dealership -> {
@@ -51,7 +51,10 @@ public class ApiService {
         // Using WebClient
     }
     public Mono<ResponseEntity<Car>> createCar(Car car) {
-		return webClient.post().uri("/cars").bodyValue(car).retrieve().bodyToMono(Car.class).map(ResponseEntity::ok);
+        return Mono.fromCallable(()->repository.save(car)).subscribeOn(Schedulers.boundedElastic()).map(result-> ResponseEntity.status(201).body(result)).onErrorResume(e ->{e.printStackTrace();
+        return Mono.just(ResponseEntity.status(500).build());
+        });
+		//return webClient.post().uri("/cars").bodyValue(car).retrieve().bodyToMono(Car.class).map(ResponseEntity::ok);
 	}
     
 	
